@@ -1,5 +1,9 @@
 name: vanpt
-on: [push]
+on:
+  push:
+    paths:
+      - cloudflare/**
+
 jobs:
   Stage-number-1:
     runs-on: ubuntu-latest
