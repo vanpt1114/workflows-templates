@@ -1,8 +1,6 @@
 name: GitHub Actions Demo
 on:
-  push:
-    paths-ignore:
-      - cloudflare/**
+  workflow_call:
 
 jobs:
   Explore-GitHub-Actions:
