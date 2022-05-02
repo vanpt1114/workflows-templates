@@ -1,25 +1,31 @@
-name: GitHub Actions Demo
+name: Docker workflow
 on:
   workflow_call:
 
-jobs:
-  Explore-GitHub-Actions:
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+env:
+  IMAGE_REPOSITORY: ""
 
-  Stage-number-2:
+.before_script: &before_script
+  - |
+    #!/bin/bash
+
+    if [[ "$IMAGE_REPOSITORY" == "" ]]; then
+      echo "IMAGE_REPOSITORY must be define."
+      echo "exit 1"
+      exit 1
+    fi
+
+    IMAGE_TAG=main-$(echo ${GITHUB_SHA::7})
+
+jobs:
+  docker_build_and_push:
     runs-on: ubuntu-latest
-    needs: [Explore-GitHub-Actions]
+    if: github.ref == "refs/heads/main" || github.ref == "refs/heads/master"
     steps:
-      - run: echo "At this step, I should build container images with docker, or something else"
+      - run: *before_script
+      - uses: actions/checkout@v3
+      - uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }} 
+          password: ${{ secrets.DOCKER_TOKEN }}
+      - run: printenv
