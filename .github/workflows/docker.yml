@@ -5,6 +5,11 @@ on:
       IMAGE_REPOSITORY:
         required: true
         type: string
+    secrets:
+      DOCKER_USERNAME:
+        required: true
+      DOCKER_TOKEN:
+        required: true
 
 env:
   IMAGE_REPOSITORY: ${{ inputs.IMAGE_REPOSITORY }}
