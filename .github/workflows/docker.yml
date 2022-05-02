@@ -44,8 +44,6 @@ jobs:
           password: ${{ secrets.DOCKER_TOKEN }}
       - name: Build and push
         uses: docker/build-push-action@v2
-        env:
-          IMAGE_TAG: ${{ }}
         with:
           push: false
           tags: ${{ steps.before_script.outputs.IMAGE_URL }}
