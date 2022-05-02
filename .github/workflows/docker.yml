@@ -5,18 +5,6 @@ on:
 env:
   IMAGE_REPOSITORY: ""
 
-.before_script: &before_script
-  - |
-    #!/bin/bash
-
-    if [[ "$IMAGE_REPOSITORY" == "" ]]; then
-      echo "IMAGE_REPOSITORY must be define."
-      echo "exit 1"
-      exit 1
-    fi
-
-    IMAGE_TAG=main-$(echo ${GITHUB_SHA::7})
-
 jobs:
   docker_build_and_push:
     runs-on: ubuntu-latest
