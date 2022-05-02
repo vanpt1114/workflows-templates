@@ -2,9 +2,6 @@ name: Docker workflow
 on:
   workflow_call:
 
-env:
-  IMAGE_REPOSITORY: ""
-
 jobs:
   docker_build_and_push:
     runs-on: ubuntu-latest
@@ -15,7 +12,7 @@ jobs:
 
           if [[ "$IMAGE_REPOSITORY" == "" ]]; then
             echo "IMAGE_REPOSITORY must be define."
-            echo "exit 1"
+            echo "IMAGE_REPOSITORY: ${IMAGE_REPOSITORY}"
             exit 1
           fi
 
