@@ -5,6 +5,9 @@ on:
       IMAGE_REPOSITORY:
         required: true
         type: string
+      TAG_PREFIX:
+        required: false
+        type: string
     secrets:
       DOCKER_USERNAME:
         required: true
@@ -13,6 +16,7 @@ on:
 
 env:
   IMAGE_REPOSITORY: ${{ inputs.IMAGE_REPOSITORY }}
+  TAG_PREFIX: ${{ inputs.TAG_PREFIX }}
 
 jobs:
   docker_build_and_push:
@@ -32,8 +36,10 @@ jobs:
             exit 1
           fi
 
-          IMAGE_TAG=m-$(echo ${GITHUB_SHA::7})
+          TAG_PREFIX=${TAG_PREFIX:-m}
+          IMAGE_TAG=${TAG_PREFIX}-$(echo ${GITHUB_SHA::7})
           echo "::set-output name=IMAGE_URL::${IMAGE_REPOSITORY}:${IMAGE_TAG}"
+          fi
 
       - uses: actions/checkout@v3
       - name: Set up Docker Buildx
