@@ -1,6 +1,13 @@
 name: Docker workflow
 on:
   workflow_call:
+    inputs:
+      IMAGE_REPOSITORY:
+        required: true
+        type: string
+
+env:
+  IMAGE_REPOSITORY: ${{ inputs.IMAGE_REPOSITORY }}
 
 jobs:
   docker_build_and_push:
